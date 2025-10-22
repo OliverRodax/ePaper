@@ -2,11 +2,15 @@ LOW:
     make it look good
     A picture mode 
     A Frame
+    Gyro Sensor to have it horizontal or vertical
+
 
 MEDIUM:
     Weather API support
     When to Water the Plants
     Time/Clock
+    Which Medicine to take
+    PWA for phone connection
 
 HIGH:
     Working demo that is made by me
