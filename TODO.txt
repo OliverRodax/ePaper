@@ -1,0 +1,12 @@
+LOW:
+    make it look good
+    A picture mode 
+    A Frame
+
+MEDIUM:
+    Weather API support
+    When to Water the Plants
+    Time/Clock
+
+HIGH:
+    Working demo that is made by me
