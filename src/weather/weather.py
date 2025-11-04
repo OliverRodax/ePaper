@@ -1,5 +1,8 @@
 import os
 import requests
+import csv
+import pandas as pd
+import json
 
 # Use an environment variable for the API key
 API_KEY = "e15eaa7e4d12f5714a90efe14861857a"
@@ -28,17 +31,32 @@ def get_weather_forecast_by_coords(lat: float, lon: float, units: str = "metric"
     resp = requests.get(FORECAST_URL, params=params, timeout=10)
     resp.raise_for_status()
     return resp.json()
+        
+def select_needed_weather_data(weather):
+    selected_weather = weather
 
 if __name__ == "__main__":
     city = "Seebenstein"
-    results = geocode(city, limit=1)
+    #results = geocode(city, limit=1)
     #print(results)
-    if not results:
-        print("Location not found")
-    else:
-        loc = results[0]
-        lat, lon = loc["lat"], loc["lon"]
-        weather = get_weather_by_coords(lat, lon)
+    # if not results:
+    #     print("Location not found")
+    # else:
+    #      loc = results[0]
+    #     lat, lon = loc["lat"], loc["lon"]
+        #weather = get_weather_by_coords(lat, lon)
+    with open('src/weather/weather.json', 'r',encoding='utf-8') as f:
+        weather = json.load(f)
+    print(weather)
         #print(weather)
-        forecast = get_weather_forecast_by_coords(lat, lon)
-        print(forecast)
+        # with open('src/weather/weather.json', 'w') as f:
+        #     json.dump(weather, f, indent=4)
+        #forecast = get_weather_forecast_by_coords(lat, lon)
+
+
+
+        # with open('forecast.json', 'w') as f:
+        #     json.dump(forecast, f, indent=4)
+
+
+
