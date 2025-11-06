@@ -1,8 +1,3 @@
-import os
-import requests
-import csv
-import pandas as pd
-import json
 
 # Origianl Structure of a API Json
 #{
@@ -43,90 +38,69 @@ import json
 #   "cod": 200
 # }
 
+import os
+import requests
 
-# Use an environment variable for the API key
-API_KEY = "e15eaa7e4d12f5714a90efe14861857a"
-if not API_KEY:
-    raise SystemExit("Set OPENWEATHER_API_KEY in the environment")
+class Weather():
+    def __init__(self, city):
+        self.API_KEY = os.getenv("WEATHER_KEY")
+        if not self.API_KEY:
+            raise SystemExit("Set OPENWEATHER_API_KEY in the environment")
+        self.city = city
+        self.GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
+        self.WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
+        geocode_results = self.geocode()
+        if not geocode_results:
+            print("Location not found")
+        else:
+            loc = geocode_results[0]
+            self.lat, self.lon = loc["lat"], loc["lon"]
 
-GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
-WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
+    def geocode(self, limit: int = 1):
+        q = self.city
+        params = {"q": q, "limit": limit, "appid": self.API_KEY}
+        resp = requests.get(self.GEOCODE_URL, params=params, timeout=10)
+        resp.raise_for_status()
+        return resp.json()
 
-def geocode(city: str, country: str | None = None, limit: int = 1):
-    q = f"{city},{country}" if country else city
-    params = {"q": q, "limit": limit, "appid": API_KEY}
-    resp = requests.get(GEOCODE_URL, params=params, timeout=10)
-    resp.raise_for_status()
-    return resp.json()
+    def get_weather_by_coords(self, units: str = "metric"):
+        params = {"lat": self.lat, "lon": self.lon, "units": units, "appid": self.API_KEY}
+        resp = requests.get(self.WEATHER_URL, params=params, timeout=10)
+        resp.raise_for_status()
+        return resp.json()
 
-def get_weather_by_coords(lat: float, lon: float, units: str = "metric"):
-    params = {"lat": lat, "lon": lon, "units": units, "appid": API_KEY}
-    resp = requests.get(WEATHER_URL, params=params, timeout=10)
-    resp.raise_for_status()
-    return resp.json()
-
-def get_weather_forecast_by_coords(lat: float, lon: float, units: str = "metric"):
-    FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast"
-    params = {"lat": lat, "lon": lon, "units": units, "appid": API_KEY}
-    resp = requests.get(FORECAST_URL, params=params, timeout=10)
-    resp.raise_for_status()
-    return resp.json()
-        
-def strip_weather(weather):
-    weather_stripped = {
-        "main": weather["weather"][0]["main"],
-        "description": weather["weather"][0]["description"],
-        "feels_like": weather["main"]["feels_like"],
-        "dt": weather["dt"],
-        "sunrise": weather["sys"]["sunrise"],
-        "sunset": weather["sys"]["sunset"],
-        "temperature": weather["main"]["temp"],
-        "timezone": weather["timezone"]
-    }
-    return weather_stripped
-
-def strip_forecast(forecast):
-    stripped_forecast = []
-    for weather in forecast["list"]:
-        stripped_forecast.append({
-        "main": weather["weather"][0]["main"],
-        "description": weather["weather"][0]["description"],
-        "feels_like": weather["main"]["feels_like"],
-        "dt": weather["dt"],
-        "dt_txt": weather["dt_txt"],
-        "temperature": weather["main"]["temp"]
+    def get_weather_forecast_by_coords(self,units: str = "metric"):
+        FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast"
+        params = {"lat": self.lat, "lon": self.lon, "units": units, "appid": self.API_KEY}
+        resp = requests.get(FORECAST_URL, params=params, timeout=10)
+        resp.raise_for_status()
+        return resp.json()
+            
+    def strip_weather(self,weather):
+        weather_stripped = {
+            "main": weather["weather"][0]["main"],
+            "description": weather["weather"][0]["description"],
+            "feels_like": weather["main"]["feels_like"],
+            "dt": weather["dt"],
+            "sunrise": weather["sys"]["sunrise"],
+            "sunset": weather["sys"]["sunset"],
+            "temperature": weather["main"]["temp"],
+            "timezone": weather["timezone"]
         }
-)
-    return stripped_forecast
+        return weather_stripped
 
-if __name__ == "__main__":
-    city = "Seebenstein"
-    #results = geocode(city, limit=1)
-    #print(results)
-    # if not results:
-    #     print("Location not found")
-    # else:
-    #      loc = results[0]
-    #     lat, lon = loc["lat"], loc["lon"]
-        #weather = get_weather_by_coords(lat, lon)
-    with open('src/weather/weather.json', 'r',encoding='utf-8') as f:
-        weather = json.load(f)
-    striped_weather = strip_weather(weather)
-    #print(striped_weather)
-
-        #print(weather)
-        # with open('src/weather/weather.json', 'w') as f:
-        #     json.dump(weather, f, indent=4)
-        #forecast = get_weather_forecast_by_coords(lat, lon)
-
-    with open('src/weather/forecast.json', 'r',encoding='utf-8') as f:
-        forecast = json.load(f)
-    stripped_forecast = strip_forecast(forecast)
-    with open('src/weather/stripped_forecast.json', 'w',encoding='utf-8') as f:
-        json.dump(stripped_forecast, f, indent=4)
-    print(stripped_forecast)
-        # with open('forecast.json', 'w') as f:
-        #     json.dump(forecast, f, indent=4)
-
+    def strip_forecast(self,forecast):
+        stripped_forecast = []
+        for weather in forecast["list"]:
+            stripped_forecast.append({
+            "main": weather["weather"][0]["main"],
+            "description": weather["weather"][0]["description"],
+            "feels_like": weather["main"]["feels_like"],
+            "dt": weather["dt"],
+            "dt_txt": weather["dt_txt"],
+            "temperature": weather["main"]["temp"]
+            }
+    )
+        return stripped_forecast
 
 
