@@ -4,6 +4,46 @@ import csv
 import pandas as pd
 import json
 
+# Origianl Structure of a API Json
+#{
+#   "coord": { "lon": 16.1506, "lat": 47.6957 },
+#   "weather": [
+#     {
+#       "id": 804,
+#       "main": "Clouds",
+#       "description": "overcast clouds",
+#       "icon": "04n"
+#     }
+#   ],
+#   "base": "stations",
+#   "main": {
+#     "temp": 10.08,
+#     "feels_like": 9.47,
+#     "temp_min": 10.08,
+#     "temp_max": 10.08,
+#     "pressure": 1005,
+#     "humidity": 89,
+#     "sea_level": 1005,
+#     "grnd_level": 943
+#   },
+#   "visibility": 10000,
+#   "wind": { "speed": 1.38, "deg": 219, "gust": 1.2 },
+#   "clouds": { "all": 93 },
+#   "dt": 1761164041,
+#   "sys": {
+#     "type": 2,
+#     "id": 2007654,
+#     "country": "AT",
+#     "sunrise": 1761110661,
+#     "sunset": 1761148504
+#   },
+#   "timezone": 7200,
+#   "id": 7871872,
+#   "name": "Seebenstein",
+#   "cod": 200
+# }
+
+
 # Use an environment variable for the API key
 API_KEY = "e15eaa7e4d12f5714a90efe14861857a"
 if not API_KEY:
@@ -32,8 +72,32 @@ def get_weather_forecast_by_coords(lat: float, lon: float, units: str = "metric"
     resp.raise_for_status()
     return resp.json()
         
-def select_needed_weather_data(weather):
-    selected_weather = weather
+def strip_weather(weather):
+    weather_stripped = {
+        "main": weather["weather"][0]["main"],
+        "description": weather["weather"][0]["description"],
+        "feels_like": weather["main"]["feels_like"],
+        "dt": weather["dt"],
+        "sunrise": weather["sys"]["sunrise"],
+        "sunset": weather["sys"]["sunset"],
+        "temperature": weather["main"]["temp"],
+        "timezone": weather["timezone"]
+    }
+    return weather_stripped
+
+def strip_forecast(forecast):
+    stripped_forecast = []
+    for weather in forecast["list"]:
+        stripped_forecast.append({
+        "main": weather["weather"][0]["main"],
+        "description": weather["weather"][0]["description"],
+        "feels_like": weather["main"]["feels_like"],
+        "dt": weather["dt"],
+        "dt_txt": weather["dt_txt"],
+        "temperature": weather["main"]["temp"]
+        }
+)
+    return stripped_forecast
 
 if __name__ == "__main__":
     city = "Seebenstein"
@@ -47,14 +111,20 @@ if __name__ == "__main__":
         #weather = get_weather_by_coords(lat, lon)
     with open('src/weather/weather.json', 'r',encoding='utf-8') as f:
         weather = json.load(f)
-    print(weather)
+    striped_weather = strip_weather(weather)
+    #print(striped_weather)
+
         #print(weather)
         # with open('src/weather/weather.json', 'w') as f:
         #     json.dump(weather, f, indent=4)
         #forecast = get_weather_forecast_by_coords(lat, lon)
 
-
-
+    with open('src/weather/forecast.json', 'r',encoding='utf-8') as f:
+        forecast = json.load(f)
+    stripped_forecast = strip_forecast(forecast)
+    with open('src/weather/stripped_forecast.json', 'w',encoding='utf-8') as f:
+        json.dump(stripped_forecast, f, indent=4)
+    print(stripped_forecast)
         # with open('forecast.json', 'w') as f:
         #     json.dump(forecast, f, indent=4)
 
