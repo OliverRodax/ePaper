@@ -1,0 +1,48 @@
+
+[
+    {
+        "name": "Aloe Vera",
+        "type": "Succulent",
+        "watering": 18,
+        "tip": "Let soil completely dry between waterings; soggy soil → root rot",
+        "Check": "Leaves may wrinkle slightly if thirsty."
+
+    },
+    {
+        "name": "Anthurium",
+        "type": "Tropical, flowering plant",
+        "watering": 7,
+        "tip": "Avoid water on leaves to prevent fungus; increase humidity if air is dry",
+        "Check": "Leaves drooping → increase watering/humidity; yellowing leaves → overwatering."
+    },
+    {
+        "name": "Devils Ivy",
+        "type": "Hardy vine",
+        "watering": 10,
+        "tip": "Thrives in low light; can tolerate occasional missed watering",
+        "Check": "Leaves curling → underwatered; yellow leaves → overwatered."
+    },
+
+    {
+        "name": "Peace Lily",
+        "type": "Tropical, flowering",
+        "watering": 7,
+        "tip": "Drooping leaves → water immediately; dont leave standing water",
+        "Check": "Brown tips → too dry or low humidity"
+    },
+
+    {
+        "name": "Pineapple Plant",
+        "type": "Bromeliad",
+        "watering": 7,
+        "tip": "Avoid overwatering soil; ensure good drainage",
+        "Check": "Dry outer leaves → water; mushy leaves → overwatered"
+    },
+    {
+        "name": "Tradescantia",
+        "type": "Fast-growing trailing plant",
+        "watering": 6,
+        "tip": "Keep soil slightly moist, not soggy; well-draining pot",
+        "Check": "Curling leaves → underwatered; yellow → overwatered."
+    }
+]
