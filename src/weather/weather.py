@@ -1,5 +1,69 @@
+# Original Structure of forecast Api Json
+# {
+#   "cod": "200",
+#   "message": 0,
+#   "cnt": 40,
+#   "list": [
+#     {
+#       "dt": 1761166800,
+#       "main": {
+#         "temp": 10.08,
+#         "feels_like": 9.47,
+#         "temp_min": 10.08,
+#         "temp_max": 10.22,
+#         "pressure": 1005,
+#         "sea_level": 1005,
+#         "grnd_level": 943,
+#         "humidity": 89,
+#         "temp_kf": -0.14
+#       },
+#       "weather": [
+#         {
+#           "id": 803,
+#           "main": "Clouds",
+#           "description": "broken clouds",
+#           "icon": "04n"
+#         }
+#       ],
+#       "clouds": { "all": 77 },
+#       "wind": { "speed": 1.96, "deg": 220, "gust": 1.79 },
+#       "visibility": 10000,
+#       "pop": 0,
+#       "sys": { "pod": "n" },
+#       "dt_txt": "2025-10-22 21:00:00"
+#     },
+#     {
+#       "dt": 1761177600,
+#       "main": {
+#         "temp": 10.1,
+#         "feels_like": 9.46,
+#         "temp_min": 10.1,
+#         "temp_max": 10.14,
+#         "pressure": 1005,
+#         "sea_level": 1005,
+#         "grnd_level": 942,
+#         "humidity": 88,
+#         "temp_kf": -0.04
+#       },
+#       "weather": [
+#         {
+#           "id": 803,
+#           "main": "Clouds",
+#           "description": "broken clouds",
+#           "icon": "04n"
+#         }
+#       ],
+#       "clouds": { "all": 69 },
+#       "wind": { "speed": 2.13, "deg": 227, "gust": 1.9 },
+#       "visibility": 10000,
+#       "pop": 0,
+#       "sys": { "pod": "n" },
+#       "dt_txt": "2025-10-23 00:00:00"
+#     },.....
 
-# Origianl Structure of a API Json
+
+
+# Origianl Structure of weather API Json
 #{
 #   "coord": { "lon": 16.1506, "lat": 47.6957 },
 #   "weather": [
@@ -102,5 +166,3 @@ class Weather():
             }
     )
         return stripped_forecast
-
-
