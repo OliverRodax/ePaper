@@ -103,6 +103,7 @@
 # }
 
 import os
+import json
 import requests
 
 class Weather():
@@ -113,12 +114,16 @@ class Weather():
         self.city = city
         self.GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
         self.WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
+
         geocode_results = self.geocode()
         if not geocode_results:
             print("Location not found")
         else:
             loc = geocode_results[0]
             self.lat, self.lon = loc["lat"], loc["lon"]
+
+        self.weather = None 
+        self.forecast = None # not calling api because i can only call every 3 hours 
 
     def geocode(self, limit: int = 1):
         q = self.city
@@ -131,14 +136,16 @@ class Weather():
         params = {"lat": self.lat, "lon": self.lon, "units": units, "appid": self.API_KEY}
         resp = requests.get(self.WEATHER_URL, params=params, timeout=10)
         resp.raise_for_status()
-        return resp.json()
+        self.weather = self.strip_weather(resp.json())
+        return self.weather
 
     def get_weather_forecast_by_coords(self,units: str = "metric"):
         FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast"
         params = {"lat": self.lat, "lon": self.lon, "units": units, "appid": self.API_KEY}
         resp = requests.get(FORECAST_URL, params=params, timeout=10)
         resp.raise_for_status()
-        return resp.json()
+        self.forecast = self.strip_forecast(resp.json())
+        return self.forecast
             
     def strip_weather(self,weather):
         weather_stripped = {
@@ -166,3 +173,7 @@ class Weather():
             }
     )
         return stripped_forecast
+    
+    def write_stripped_forecast(self):
+        with open("src/data/stripped_forecast.json", "w", encoding="utf-8") as f:
+            json.dump(self.forecast, f, ensure_ascii=False, indent=2)
