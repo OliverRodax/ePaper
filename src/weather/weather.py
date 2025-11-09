@@ -170,8 +170,7 @@ class Weather():
             "dt": weather["dt"],
             "dt_txt": weather["dt_txt"],
             "temperature": weather["main"]["temp"]
-            }
-    )
+            })
         return stripped_forecast
     
     def write_stripped_forecast(self):
