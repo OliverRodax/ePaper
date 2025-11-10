@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from waveshare_epd import epd7in5b_V2
+import epd7in5b_V2
 from PIL import Image, ImageDraw
 import time
 import atexit
