@@ -1,12 +1,14 @@
 #!/usr/bin/python
-import epd7in5b_V2
+import sys
+sys.path.append('/home/oliver/Documents/ePaper/src')
+from waveshare_epd import epd7in5b_V2
 from PIL import Image, ImageDraw
 import time
 import atexit
 
 
 class Display:
-    def _init_(self):
+    def __init__(self):
         self.epd = epd7in5b_V2.EPD()
 
     def demo(self):
@@ -26,3 +28,7 @@ class Display:
 
         finally:
             print("Program finished")
+
+
+test = Display()
+test.demo()
