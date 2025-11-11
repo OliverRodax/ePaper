@@ -11,7 +11,7 @@ class Medicine:
         
 
     def read_medicine(self):
-        file_path = os.path.join(self.current_dir, "data", "my_medicine.json")
+        file_path = os.path.join(self.current_dir, "src" ,"data", "my_medicine.json")
         with open(file_path, "r") as f:
             self.medicine = json.load(f)
         return self.medicine
@@ -26,7 +26,7 @@ class Medicine:
                     days=(medicine["how_often"] - 1)
                 )  # minus one because it updates one day later
                 medicine["take_date"] = new_take_date.isoformat()
-        file_path = os.path.join(self.current_dir, "data", "my_medicine.json")
+        file_path = os.path.join(self.current_dir, "src" ,"data", "my_medicine.json")
         with open(file_path, "w") as f:
             json.dump(self.medicine, f, ensure_ascii=False, indent=2)
         self.read_today_medicine()
