@@ -1,16 +1,18 @@
 import json
 from datetime import date, timedelta
+import os
 
 
 class Medicine:
     def __init__(self):
         self.medicine = self.read_medicine()
         self.today_medicine = self.read_today_medicine()
+        self.current_dir = os.path.dirname(os.path.abspath(__file__))
 
     def read_medicine(self):
-        with open("src/data/my_medicine.json", "r") as f:
+        file_path = os.path.join(self.current_dir, "data", "my_medicine.json")
+        with open(file_path, "r") as f:
             self.medicine = json.load(f)
-
         return self.medicine
 
     def update_medicine(self):
@@ -23,7 +25,8 @@ class Medicine:
                     days=(medicine["how_often"] - 1)
                 )  # minus one because it updates one day later
                 medicine["take_date"] = new_take_date.isoformat()
-        with open("src/data/my_medicine.json", "w") as f:
+        file_path = os.path.join(self.current_dir, "data", "my_medicine.json")
+        with open(file_path, "w") as f:
             json.dump(self.medicine, f, ensure_ascii=False, indent=2)
         self.read_today_medicine()
 

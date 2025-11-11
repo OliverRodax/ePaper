@@ -6,7 +6,7 @@ from data.data import Data
 
 class Main():
     def __init__(self):
-        self.weather = Weather()
+        self.weather = Weather(city="Seebenstein")
         self.medicine = Medicine()
         self.plants = Plants()
         self.data = Data(self.weather,self.plants,self.medicine)

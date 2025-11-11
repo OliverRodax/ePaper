@@ -1,14 +1,17 @@
 import json
 from datetime import date, timedelta
+import os
 
 
 class Plants:
     def __init__(self):
         self.plants = self.read_plants()
         self.plants_water_today = self.read_water_today()
+        self.current_dir = os.path.dirname(os.path.abspath(__file__))
 
     def read_plants(self):
-        with open("src/data/my_plants.json", "r") as f:
+        file_path = os.path.join(self.current_dir, "data", "my_plants.json")
+        with open(file_path, "r") as f:
             plant_data = json.load(f)
         return plant_data
 
@@ -22,7 +25,8 @@ class Plants:
                     days=(plant["watering"] - 1)
                 )  # minus one because it updates one day later
                 plant["water_date"] = new_water_date.isoformat()
-        with open("src/data/my_plants.json", "w") as f:
+        file_path = os.path.join(self.current_dir, "data", "my_plants.json")
+        with open(file_path, "w") as f:
             json.dump(self.plants, f, ensure_ascii=False, indent=2)
         self.read_water_today()
 

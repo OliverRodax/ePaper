@@ -114,6 +114,7 @@ class Weather():
         self.city = city
         self.GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
         self.WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
+        self.current_dir = os.getcwd()
 
         geocode_results = self.geocode()
         if not geocode_results:
@@ -123,7 +124,7 @@ class Weather():
             self.lat, self.lon = loc["lat"], loc["lon"]
 
         self.weather = self.get_weather_by_coords() 
-        self.forecast = self.get_weather_forecast_by_file() # not calling api because i can only call every 3 hours 
+        #self.forecast = self.get_weather_forecast_by_file() # not calling api because i can only call every 3 hours 
 
     def geocode(self, limit: int = 1):
         q = self.city
@@ -148,12 +149,15 @@ class Weather():
         return self.forecast
     
     def get_weather_forecast_by_file(self):
-        with open("C:\Users\olive\Documents\programmin\ePaper\src\data\stripped_forecast.json","r") as f:
+        file_path = os.path.join(self.current_dir,"src", "data", "stripped_forecast.json")
+        with open(file_path, "r") as f:
             self.forecast = json.load(f)
             return json.load(f)
+            
     def write_weather_forecast_to_file(self):
-        with open("C:\Users\olive\Documents\programmin\ePaper\src\data\stripped_forecast.json","w") as f:
-            json.dump(self.forecast,f, ensure_ascii=False, indent=2)
+        file_path = os.path.join(self.current_dir,"src", "data", "stripped_forecast.json")
+        with open(file_path, "w") as f:
+            json.dump(self.forecast, f, ensure_ascii=False, indent=2)
             
     def strip_weather(self,weather):
         weather_stripped = {
@@ -181,3 +185,5 @@ class Weather():
             }
     )
         return stripped_forecast
+    
+test = Weather(city="Seebenstein")
