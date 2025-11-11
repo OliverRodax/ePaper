@@ -122,8 +122,8 @@ class Weather():
             loc = geocode_results[0]
             self.lat, self.lon = loc["lat"], loc["lon"]
 
-        self.weather = None 
-        self.forecast = None # not calling api because i can only call every 3 hours 
+        self.weather = self.get_weather_by_coords() 
+        self.forecast = self.get_weather_forecast_by_file() # not calling api because i can only call every 3 hours 
 
     def geocode(self, limit: int = 1):
         q = self.city
@@ -143,9 +143,17 @@ class Weather():
         FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast"
         params = {"lat": self.lat, "lon": self.lon, "units": units, "appid": self.API_KEY}
         resp = requests.get(FORECAST_URL, params=params, timeout=10)
-        resp.raise_for_status()
+        resp.raise_for_status()        
         self.forecast = self.strip_forecast(resp.json())
         return self.forecast
+    
+    def get_weather_forecast_by_file(self):
+        with open("C:\Users\olive\Documents\programmin\ePaper\src\data\stripped_forecast.json","r") as f:
+            self.forecast = json.load(f)
+            return json.load(f)
+    def write_weather_forecast_to_file(self):
+        with open("C:\Users\olive\Documents\programmin\ePaper\src\data\stripped_forecast.json","w") as f:
+            json.dump(self.forecast,f, ensure_ascii=False, indent=2)
             
     def strip_weather(self,weather):
         weather_stripped = {
@@ -170,9 +178,6 @@ class Weather():
             "dt": weather["dt"],
             "dt_txt": weather["dt_txt"],
             "temperature": weather["main"]["temp"]
-            })
+            }
+    )
         return stripped_forecast
-    
-    def write_stripped_forecast(self):
-        with open("src/data/stripped_forecast.json", "w", encoding="utf-8") as f:
-            json.dump(self.forecast, f, ensure_ascii=False, indent=2)
