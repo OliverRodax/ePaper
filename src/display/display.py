@@ -22,12 +22,12 @@ class Display:
             image_red = Image.new("1", (800, 480), 255)
             draw_red = ImageDraw.Draw(image_red)
             for i, medicine in enumerate(self.data.medicine.today_medicine):
-                draw_black.text((i * 100, 0), medicine["name"]+ " " + medicine["quantity"]+ " " + medicine["how often"], fill=0)
+                draw_black.text((i * 200, 0), medicine["name"]+ " Quantity:" + str(medicine["quantity"]), fill=0)
             
             for i, plant in enumerate(self.data.plants.plants_water_today):
                 draw_black.text((i * 100, 100), plant["name"], fill=0)
 
-            draw_black.text((i * 100, 100), self.data.weather.weather["main"] + self.data.weather.weather["feels_like"], fill=0)
+            draw_black.text((0, 200),"Weather: " + self.data.weather.weather["main"]+ " Temperature: " + str(self.data.weather.weather["feels_like"]), fill=0)
             self.epd.display(self.epd.getbuffer(image_black), self.epd.getbuffer(image_red))
             self.epd.sleep()
 

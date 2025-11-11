@@ -22,5 +22,5 @@ class Main():
 
 if __name__ == "__main__":
     main = Main()
-    while main.run:
-        main.main_loop()
+    #while main.run:
+    main.main_loop()
