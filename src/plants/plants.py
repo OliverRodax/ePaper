@@ -11,7 +11,7 @@ class Plants:
         
 
     def read_plants(self):
-        file_path = os.path.join(self.current_dir, "data", "my_plants.json")
+        file_path = os.path.join(self.current_dir,"src" , "data", "my_plants.json")
         with open(file_path, "r") as f:
             plant_data = json.load(f)
         return plant_data
@@ -26,7 +26,7 @@ class Plants:
                     days=(plant["watering"] - 1)
                 )  # minus one because it updates one day later
                 plant["water_date"] = new_water_date.isoformat()
-        file_path = os.path.join(self.current_dir, "data", "my_plants.json")
+        file_path = os.path.join(self.current_dir, "src" ,"data", "my_plants.json")
         with open(file_path, "w") as f:
             json.dump(self.plants, f, ensure_ascii=False, indent=2)
         self.read_water_today()
