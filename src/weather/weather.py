@@ -1,5 +1,69 @@
+# Original Structure of forecast Api Json
+# {
+#   "cod": "200",
+#   "message": 0,
+#   "cnt": 40,
+#   "list": [
+#     {
+#       "dt": 1761166800,
+#       "main": {
+#         "temp": 10.08,
+#         "feels_like": 9.47,
+#         "temp_min": 10.08,
+#         "temp_max": 10.22,
+#         "pressure": 1005,
+#         "sea_level": 1005,
+#         "grnd_level": 943,
+#         "humidity": 89,
+#         "temp_kf": -0.14
+#       },
+#       "weather": [
+#         {
+#           "id": 803,
+#           "main": "Clouds",
+#           "description": "broken clouds",
+#           "icon": "04n"
+#         }
+#       ],
+#       "clouds": { "all": 77 },
+#       "wind": { "speed": 1.96, "deg": 220, "gust": 1.79 },
+#       "visibility": 10000,
+#       "pop": 0,
+#       "sys": { "pod": "n" },
+#       "dt_txt": "2025-10-22 21:00:00"
+#     },
+#     {
+#       "dt": 1761177600,
+#       "main": {
+#         "temp": 10.1,
+#         "feels_like": 9.46,
+#         "temp_min": 10.1,
+#         "temp_max": 10.14,
+#         "pressure": 1005,
+#         "sea_level": 1005,
+#         "grnd_level": 942,
+#         "humidity": 88,
+#         "temp_kf": -0.04
+#       },
+#       "weather": [
+#         {
+#           "id": 803,
+#           "main": "Clouds",
+#           "description": "broken clouds",
+#           "icon": "04n"
+#         }
+#       ],
+#       "clouds": { "all": 69 },
+#       "wind": { "speed": 2.13, "deg": 227, "gust": 1.9 },
+#       "visibility": 10000,
+#       "pop": 0,
+#       "sys": { "pod": "n" },
+#       "dt_txt": "2025-10-23 00:00:00"
+#     },.....
 
-# Origianl Structure of a API Json
+
+
+# Origianl Structure of weather API Json
 #{
 #   "coord": { "lon": 16.1506, "lat": 47.6957 },
 #   "weather": [
@@ -39,6 +103,7 @@
 # }
 
 import os
+import json
 import requests
 
 class Weather():
@@ -49,12 +114,17 @@ class Weather():
         self.city = city
         self.GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
         self.WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
+        self.current_dir = os.getcwd()
+
         geocode_results = self.geocode()
         if not geocode_results:
             print("Location not found")
         else:
             loc = geocode_results[0]
             self.lat, self.lon = loc["lat"], loc["lon"]
+
+        self.weather = self.get_weather_by_coords() 
+        #self.forecast = self.get_weather_forecast_by_file() # not calling api because i can only call every 3 hours 
 
     def geocode(self, limit: int = 1):
         q = self.city
@@ -67,14 +137,27 @@ class Weather():
         params = {"lat": self.lat, "lon": self.lon, "units": units, "appid": self.API_KEY}
         resp = requests.get(self.WEATHER_URL, params=params, timeout=10)
         resp.raise_for_status()
-        return resp.json()
+        self.weather = self.strip_weather(resp.json())
+        return self.weather
 
     def get_weather_forecast_by_coords(self,units: str = "metric"):
         FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast"
         params = {"lat": self.lat, "lon": self.lon, "units": units, "appid": self.API_KEY}
         resp = requests.get(FORECAST_URL, params=params, timeout=10)
-        resp.raise_for_status()
-        return resp.json()
+        resp.raise_for_status()        
+        self.forecast = self.strip_forecast(resp.json())
+        return self.forecast
+    
+    def get_weather_forecast_by_file(self):
+        file_path = os.path.join(self.current_dir,"src", "data", "stripped_forecast.json")
+        with open(file_path, "r") as f:
+            self.forecast = json.load(f)
+            return json.load(f)
+            
+    def write_weather_forecast_to_file(self):
+        file_path = os.path.join(self.current_dir,"src", "data", "stripped_forecast.json")
+        with open(file_path, "w") as f:
+            json.dump(self.forecast, f, ensure_ascii=False, indent=2)
             
     def strip_weather(self,weather):
         weather_stripped = {
@@ -102,5 +185,5 @@ class Weather():
             }
     )
         return stripped_forecast
-
-
+    
+test = Weather(city="Seebenstein")

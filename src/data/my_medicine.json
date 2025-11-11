@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Creatine",
+    "quantity": "5g",
+    "how_often": 1,
+    "take_date": "2025-11-11"
+  },
+  {
+    "name": "Iron",
+    "quantity": "1 Pill",
+    "how_often": 1,
+    "take_date": "2025-11-11"
+  },
+  {
+    "name": "Vitamins",
+    "quantity": "1 Pill",
+    "how_often": 1,
+    "take_date": "2025-11-11"
+  },
+  {
+    "name": "Vitamin B12",
+    "quantity": "1 Syringe",
+    "how_often": 7,
+    "take_date": "2025-11-15"
+  },
+  {
+    "name": "Vitamin D",
+    "quantity": "1 Pill",
+    "how_often": 7,
+    "take_date": "2025-11-15"
+  }
+]
