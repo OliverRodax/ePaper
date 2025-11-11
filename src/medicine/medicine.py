@@ -25,6 +25,7 @@ class Medicine:
                 medicine["take_date"] = new_take_date.isoformat()
         with open("src/data/my_medicine.json", "w") as f:
             json.dump(self.medicine, f, ensure_ascii=False, indent=2)
+        self.read_today_medicine()
 
     def read_today_medicine(self):
         self.medicine = self.read_medicine()

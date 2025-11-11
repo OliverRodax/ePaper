@@ -28,6 +28,8 @@ class Display:
                 draw_black.text((i * 100, 100), plant["name"], fill=0)
 
             draw_black.text((i * 100, 100), self.data.weather.weather["main"] + self.data.weather.weather["feels_like"], fill=0)
+
+            
             self.epd.display(self.epd.getbuffer(image_black), self.epd.getbuffer(image_red))
             self.epd.sleep()
 
