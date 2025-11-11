@@ -34,7 +34,7 @@ class Display:
 
             for i, medicine in enumerate(self.data.medicine.today_medicine):
                 draw_black.text(
-                    (i * 200, 0),
+                    (0, i * 50),
                     medicine["name"] + " Quantity:" + str(medicine["quantity"]),
                     font=self.font_large,
                     fill=0,
@@ -42,7 +42,8 @@ class Display:
 
             for i, plant in enumerate(self.data.plants.plants_water_today):
                 draw_black.text(
-                    (i * 100, 100), plant["name"], font=self.font_large,
+                    (0, 150), plant["name"], 
+                    font=self.font_large,
                     fill=0
                 )
 
