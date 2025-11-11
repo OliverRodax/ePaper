@@ -4,7 +4,7 @@ This is a hobby Project for a homemade smart Dashboard for my room.
 I am using a Raspberry PI 3 b+ a GooDisplay HAT and a waveshare 7.5inch E-ink Display
 
 
-The Dashboard displays live weather data and a forecast of up to 5 days
+The Dashboard displays live weather data, a forecast of up to 5 days, when to water your plants and which medicine to take today!
 
 
 How to Set up:
@@ -12,5 +12,5 @@ How to Set up:
     Clone the repo to your Pi
     Set your OpenWeatherMap API key (WEATHER_KEY in enviroment var)
     Optional set your OpenAi API key (DASHBOARD_KEY)
-    Add your plants and medicine to data json files (maybe )
+    Add your plants and medicine to data json files (maybe add Web interface later)
     run Main.py
