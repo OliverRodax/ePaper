@@ -7,7 +7,7 @@ class Plants:
     def __init__(self):
         self.plants = self.read_plants()
         self.plants_water_today = self.read_water_today()
-        self.current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.current_dir = os.getcwd()
 
     def read_plants(self):
         file_path = os.path.join(self.current_dir, "data", "my_plants.json")

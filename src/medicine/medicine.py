@@ -7,7 +7,7 @@ class Medicine:
     def __init__(self):
         self.medicine = self.read_medicine()
         self.today_medicine = self.read_today_medicine()
-        self.current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.current_dir = os.getcwd()
 
     def read_medicine(self):
         file_path = os.path.join(self.current_dir, "data", "my_medicine.json")
